@@ -1,0 +1,110 @@
+type Query {
+    hola: String!
+    usuarios: [Usuario!]
+    roles: [Rol!]
+    proyectos: [Proyecto!]
+    estadoUsuarios: [EstadoUsuario!]
+    estadoProyectos: [EstadoProyecto!]
+    fases: [Fase!]
+    inscripciones: [Inscripcion!]
+    avances: [Avance!]
+    estadoInscripciones: [EstadoInscripcion!]
+    estudiantes: [Usuario!]
+    proyectosLider(usuarioId: String!): [Proyecto!]
+    inscripcionesLider(liderId: String!): [Inscripcion!]
+    proyecto(proyectoId: String!): Proyecto
+}
+
+type Mutation{
+    createRol(nombre: String!):Rol
+    createEstadoUsuario(nombre: String!):EstadoUsuario
+    createEstadoProyecto(nombre: String!):EstadoProyecto
+    createFase(nombre: String!):Fase
+    createAvance(descripcion: String!, observacion: String!, proyectoId: String!, fecha: String):Avance
+    createEstadoInscripcion(nombre: String!):EstadoInscripcion
+    createUsuario(nombreCompleto: String!, identificacion: String!, correo: String!, contrasena: String!, rolId: String!):Usuario
+    createProyecto(nombre: String!, objetivoGeneral: String!, objetivoEspecifico: String!, presupuesto: String!, fechaInicio: String!, fechaTerminacion: String!):Proyecto
+    validateUsuario(correo: String!, contrasena: String!):Boolean
+    updateUsuario(id: String!, nombreCompleto: String!, identificacion: String!, correo: String!, contrasena: String!, rolId: String!):Usuario
+    updateEstadoUsuario(usuarioId: String!, estadoId: String!):Usuario
+    updateAprobacionProyecto(proyectoId: String!, esAprobado: Boolean!):Proyecto
+    updateEstadoProyecto(proyectoId: String!, estadoId: String!):Proyecto
+    updateFaseProyecto(proyectoId: String!, faseId: String!):Proyecto
+    updateLiderProyecto(proyectoId: String!, usuarioId: String!):Proyecto
+    updateProyecto(proyectoId: String!, nombre: String!, objetivoGeneral: String!, objetivoEspecifico: String!, presupuesto: String!):Proyecto
+    createInscripcion(liderId: String!, estudianteId: String!, proyectoId: String!, fechaIngreso: String, fechaEgreso: String):Inscripcion
+    updateEstadoInscripcion(inscripcionId: String!, estadoId: String!):Inscripcion
+    updateObservacionesAvance(avanceId: String!, observacion: String!):Avance
+    updateDescripcionAvance(avanceId: String!, descripcion: String!):Avance
+
+}
+
+type Usuario {
+    _id: ID!
+    nombreCompleto: String!
+    identificacion: String!
+    correo: String!
+    contrasena: String!
+    rol: Rol!
+    estado: EstadoUsuario!
+    proyectos: [Proyecto]
+}
+
+type Rol {
+    _id: ID!
+    nombre: String!
+}
+
+type Proyecto {
+    _id: ID!
+    nombre: String!
+    objetivoGeneral: String
+    objetivoEspecifico: String
+    presupuesto: String
+    fechaInicio: String
+    fechaTerminacion: String
+    aprobado: Boolean!
+    estado: EstadoProyecto!
+    fase: Fase
+    avances: [Avance]
+    documentoLider: String
+    nombreLider: String
+}
+
+type EstadoUsuario {
+    _id: ID!
+    nombre: String!
+}
+
+type EstadoProyecto {
+    _id: ID!
+    nombre: String!
+}
+
+type Fase {
+    _id: ID!
+    nombre: String!
+}
+
+type Inscripcion {
+    _id: ID!
+    lider: Usuario!
+    estudiante: Usuario!
+    proyecto: Proyecto!
+    fechaIngreso: String
+    fechaEgreso: String
+    estado: EstadoInscripcion!
+}
+
+type Avance {
+    _id: ID!
+    descripcion: String!
+    observacion: String!
+    proyecto: Proyecto
+    fecha: String!
+}
+
+type EstadoInscripcion {
+    _id: ID!
+    nombre: String!
+}

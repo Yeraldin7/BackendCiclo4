@@ -1,5 +1,3 @@
-import Producto from "../../models/Producto.js"
-import Persona from "../../models/Person.js"
 import Usuario from "../../models/Usuario.js"
 import Avance from "../../models/Avance.js"
 import EstadoInscripcion from "../../models/EstadoInscripcion.js"
@@ -15,7 +13,7 @@ const Query = {
         return "Esta es la respuesta de la query hola"
     },
     usuarios: async () => {
-        return await Usuario.find().populate('estado rol')
+        return await Usuario.find().populate('estado rol proyectos')
     },
     avances: async () => {
         return await Avance.find()
@@ -36,24 +34,33 @@ const Query = {
         return await EstadoUsuario.find()
     },
     proyectos: async () => {
-        return await Proyecto.find()
+        return await Proyecto.find().populate('estado fase avances')
     },
     roles: async () => {
         return await Rol.find()
     },
-
-
-
-
-    personas: async () => {
-        return await Persona.find()
+    estudiantes: async () => {
+        const rolEstudiante = (await Rol.find({"nombre":"Estudiante"}))[0]
+        return await Usuario.find({"rol": rolEstudiante._id}).populate('estado rol proyectos')
     },
-    productos: async () => {
-        return await Producto.find()
+    proyectosLider: async (_, { usuarioId}) => {
+        //Busca al lider
+        const lider = await Usuario.findById(usuarioId).populate('rol proyectos')
+        //Si el usuario no es lider no hace nada y devuelve una lista vacia
+        if (lider.rol.nombre != "Lider") {
+            return []
+        }
+        //Filtra entre sus proyectos los que tengan su identificacion
+        return lider.proyectos.filter(function(proyecto){
+            return proyecto.documentoLider == lider.identificacion;
+        })
     },
-    personas: async () => {
-        return await Persona.find()
+    inscripcionesLider: async (_, { liderId}) => {
+        return await Inscripcion.find({"lider":liderId}).populate('lider estudiante proyecto estado')
     },
+    proyecto: async (_, { proyectoId}) => {
+        return await Proyecto.findById(proyectoId).populate('estado fase avances')
+    }
 }
 
 export default Query;

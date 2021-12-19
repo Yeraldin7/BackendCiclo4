@@ -22,10 +22,6 @@ const inscripcionSchema = new Schema({
         ref: 'Proyectos',
         required: false
     },
-    aceptado: {
-        type: Boolean,
-        required: false
-    },
     fechaIngreso: {
         type: String,
         required: true

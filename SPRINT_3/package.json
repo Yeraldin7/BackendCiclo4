@@ -20,5 +20,13 @@
     "@babel/node": "^7.16.0",
     "@babel/preset-env": "^7.16.4",
     "nodemon": "^2.0.15"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yeraldin7/BackendCiclo4.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Yeraldin7/BackendCiclo4/issues"
+  },
+  "homepage": "https://github.com/Yeraldin7/BackendCiclo4#readme"
 }

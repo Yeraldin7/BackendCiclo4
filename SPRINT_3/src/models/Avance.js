@@ -1,4 +1,5 @@
 import pkg from 'mongoose';
+import Proyecto from './Proyecto.js';
 const { Schema, model } = pkg;
 
 //import {Schema, model} from "mongoose";
@@ -12,8 +13,9 @@ const avanceSchema = new Schema({
         type: String,
         required: true
     },
-    idProyecto: {
-        type: String,
+    proyecto: {
+        type: Schema.Types.ObjectId,
+        ref: 'Proyectos',
         required: true
     },
     fecha: {
